@@ -8,6 +8,7 @@
 
 class USceneComponent;
 class USkeletalMeshComponent;
+class UParticleSystem;
 
 UCLASS()
 class SIMPLESHOOTER_API AGunActor : public AActor
@@ -21,6 +22,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void PullTrigger();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -31,4 +34,13 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* Mesh = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Particles")
+	UParticleSystem* MuzzleFlash = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	float MaxRange = 1000.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Particles")
+	UParticleSystem* ImpactEffect = nullptr;
 };

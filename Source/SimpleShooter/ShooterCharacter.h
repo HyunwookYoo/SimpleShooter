@@ -30,6 +30,7 @@ protected:
 private:	
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
+	void Shoot();
 	//void LookUp(float AxisValue);
 
 	UPROPERTY(EditAnywhere)
