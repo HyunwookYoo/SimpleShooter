@@ -43,4 +43,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Particles")
 	UParticleSystem* ImpactEffect = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	float Damage = 10.f;
 };

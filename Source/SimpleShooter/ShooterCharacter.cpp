@@ -16,6 +16,8 @@ void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Health = MaxHealth;
+
 	Gun = GetWorld()->SpawnActor<AGunActor>(GunClass);
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
@@ -26,7 +28,11 @@ void AShooterCharacter::BeginPlay()
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+bool AShooterCharacter::IsDeath() const
+{
+	return Health <= 0;
 }
 
 // Called to bind functionality to input
@@ -40,6 +46,16 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot);
+}
+
+float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageToApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	DamageToApplied = FMath::Min(Health, DamageToApplied);
+	Health -= DamageToApplied;
+	UE_LOG(LogTemp, Warning, TEXT("Your Health: %f"), Health);
+
+	return DamageToApplied;
 }
 
 void AShooterCharacter::MoveForward(float AxisValue)
