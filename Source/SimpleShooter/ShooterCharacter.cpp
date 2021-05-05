@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Components/CapsuleComponent.h"
 #include "ShooterCharacter.h"
+#include "SimpleShooterGameModeBase.h"
 #include "GunActor.h"
 
 // Sets default values
@@ -53,7 +55,17 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	float DamageToApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageToApplied = FMath::Min(Health, DamageToApplied);
 	Health -= DamageToApplied;
-	UE_LOG(LogTemp, Warning, TEXT("Your Health: %f"), Health);
+
+	if (IsDeath())
+	{
+		ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
+		if (GameMode != nullptr) 
+		{
+			GameMode->PawnKilled(this);
+		}
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 
 	return DamageToApplied;
 }
