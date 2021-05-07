@@ -7,6 +7,7 @@
 #include "ShooterCharacter.generated.h"
 
 class AGunActor;
+class UUserWidget;
 
 UCLASS()
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
@@ -22,6 +23,9 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	bool IsDeath() const;
+
+	UFUNCTION(BlueprintPure)
+	float GetHealthPercent() const;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

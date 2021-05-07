@@ -9,6 +9,7 @@
 class USceneComponent;
 class USkeletalMeshComponent;
 class UParticleSystem;
+class USoundBase;
 
 UCLASS()
 class SIMPLESHOOTER_API AGunActor : public AActor
@@ -39,6 +40,12 @@ private:
 	UParticleSystem* MuzzleFlash = nullptr;
 
 	UPROPERTY(EditAnywhere)
+	USoundBase* MuzzleSound;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* ImpactSound;
+
+	UPROPERTY(EditAnywhere)
 	float MaxRange = 1000.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Particles")
@@ -46,4 +53,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float Damage = 10.f;
+
+	bool GunTrace(FHitResult& Hit, FVector& ShotDirection);
+
+	AController* GetOwnerController() const;
 };
