@@ -82,5 +82,8 @@ void AGunActor::PullTrigger()
 
 AController* AGunActor::GetOwnerController() const
 {
-	return  Cast<APawn>(GetOwner())->GetController();
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	if (OwnerPawn == nullptr) { return nullptr; }
+	 
+	return  OwnerPawn->GetController();
 }
